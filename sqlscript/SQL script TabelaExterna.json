@@ -1,8 +1,11 @@
 {
 	"name": "SQL script TabelaExterna",
 	"properties": {
+		"folder": {
+			"name": "Script tabelaExterna"
+		},
 		"content": {
-			"query": "",
+			"query": "CREATE EXTERNAL TABLE extNeoBankClient(\nRowNumber INT,\nCustomerId INT,\nSurname VARCHAR(100),\nCreditScore VARCHAR(100),\nGeography VARCHAR(100),\nGender VARCHAR(100),\nAge VARCHAR(100),\nTenure VARCHAR(100),\nBalance VARCHAR(100),\nNumOfProducts VARCHAR(100),\nHasCrCard VARCHAR(100),\nIsActiveMember VARCHAR(100),\nEstimatedSalary VARCHAR(100),\nExited VARCHAR(100)\n)\nWITH(\n\n\nLOCATION = 'NeoBank_Modelling.csv',\nDATA_SOURCE = ds_neobankbronze,\nFILE_FORMAT = formato_CSV\n)\n",
 			"metadata": {
 				"language": "sql"
 			},
