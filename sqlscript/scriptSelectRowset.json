@@ -1,0 +1,17 @@
+{
+	"name": "scriptSelectRowset",
+	"properties": {
+		"content": {
+			"query": "SELECT * FROM OPENROWSET(BULK'https://saneobankaj.blob.core.windows.net/fswsneobankpoc/NeoBank_Modelling.csv',\nFORMAT = 'CSV',\nPARSER_VERSION = '2.0',\nHEADER_ROW = TRUE) as [r]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
