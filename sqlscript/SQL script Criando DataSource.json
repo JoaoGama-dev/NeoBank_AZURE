@@ -1,6 +1,9 @@
 {
-	"name": "SQL script 1",
+	"name": "SQL script Criando DataSource",
 	"properties": {
+		"folder": {
+			"name": "Script tabelaExterna"
+		},
 		"content": {
 			"query": "create external data source ds_neobankbronze with (location = 'https://saneobankaj.blob.core.windows.net/bronze', credential = credNeoBank); ",
 			"metadata": {

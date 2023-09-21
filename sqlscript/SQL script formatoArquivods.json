@@ -1,6 +1,9 @@
 {
 	"name": "SQL script formatoArquivods",
 	"properties": {
+		"folder": {
+			"name": "Script tabelaExterna"
+		},
 		"content": {
 			"query": "create external file format formato_csv with(format_type = delimitedtext, format_options(field_terminator = ',', string_delimiter = '\"', first_row = 2, use_type_default = True));",
 			"metadata": {

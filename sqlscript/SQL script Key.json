@@ -1,6 +1,9 @@
 {
 	"name": "SQL script Key",
 	"properties": {
+		"folder": {
+			"name": "ScriptsSegurancaKey"
+		},
 		"content": {
 			"query": "create master key encryption by password = 'Qualquercoisa123';\n\nselect * from sys.symmetric_keys;",
 			"metadata": {
