@@ -1,0 +1,17 @@
+{
+	"name": "SQL script Credencial",
+	"properties": {
+		"content": {
+			"query": "create database scoped CREDENTIAL credNeoBank with identity = 'shared access signature', secret = 'sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-09-22T22:37:01Z&st=2023-09-21T14:37:01Z&spr=https,http&sig=fg3D27bBOfIKjInr0vpL4OVeAIwH5StdJCgIPu5Dx9U%3D' ",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Base2",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

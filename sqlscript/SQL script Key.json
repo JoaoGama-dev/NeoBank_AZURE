@@ -1,0 +1,17 @@
+{
+	"name": "SQL script Key",
+	"properties": {
+		"content": {
+			"query": "create master key encryption by password = 'Qualquercoisa123';\n\nselect * from sys.symmetric_keys;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Base2",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
