@@ -1,0 +1,17 @@
+{
+	"name": "SQL script formatoArquivods",
+	"properties": {
+		"content": {
+			"query": "create external file format formato_csv with(format_type = delimitedtext, format_options(field_terminator = ',', string_delimiter = '\"', first_row = 2, use_type_default = True));",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Base2",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
