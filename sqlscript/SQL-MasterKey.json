@@ -1,0 +1,20 @@
+{
+	"name": "SQL-MasterKey",
+	"properties": {
+		"folder": {
+			"name": "SQL-Dedicado"
+		},
+		"content": {
+			"query": "create master key encryption by password = 'Qualquercoisa123';",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "syndp_neoBank",
+				"poolName": "syndp_neoBank"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

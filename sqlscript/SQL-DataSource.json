@@ -1,0 +1,20 @@
+{
+	"name": "SQL-DataSource",
+	"properties": {
+		"folder": {
+			"name": "SQL-Dedicado"
+		},
+		"content": {
+			"query": "CREATE EXTERNAL DATA SOURCE ContainersaNeoBank \nWITH (\n    LOCATION = 'https://saneobankaj.blob.core.windows.net/silver',\n    CREDENTIAL = Credsaneobankaj\n)",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "syndp_neoBank",
+				"poolName": "syndp_neoBank"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

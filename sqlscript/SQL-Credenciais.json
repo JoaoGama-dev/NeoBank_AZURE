@@ -1,0 +1,20 @@
+{
+	"name": "SQL-Credenciais",
+	"properties": {
+		"folder": {
+			"name": "SQL-Dedicado"
+		},
+		"content": {
+			"query": "create database scoped CREDENTIAL Credsaneobankaj with identity = 'shared access signature', secret = 'sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-10-10T04:26:05Z&st=2023-10-09T20:26:05Z&spr=https&sig=%2BAhyscbGYoih%2F%2Fv%2FV7AvJp8NtkRg4qTCG4uGZAHtH7w%3D' \nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "syndp_neoBank",
+				"poolName": "syndp_neoBank"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
