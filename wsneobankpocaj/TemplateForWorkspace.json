@@ -22,6 +22,15 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('workspaceName'), '/syndp_neoBank')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/wsneobankpocaj-WorkspaceDefaultSqlServer')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -201,6 +210,118 @@
 					"currentConnection": {
 						"databaseName": "Base2",
 						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-Credenciais')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "SQL-Dedicado"
+				},
+				"content": {
+					"query": "create database scoped CREDENTIAL Credsaneobankaj with identity = 'shared access signature', secret = 'sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-10-10T04:26:05Z&st=2023-10-09T20:26:05Z&spr=https&sig=%2BAhyscbGYoih%2F%2Fv%2FV7AvJp8NtkRg4qTCG4uGZAHtH7w%3D' \nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "syndp_neoBank",
+						"poolName": "syndp_neoBank"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-DataSource')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "SQL-Dedicado"
+				},
+				"content": {
+					"query": "CREATE EXTERNAL DATA SOURCE ContainersaNeoBank \nWITH (\n    LOCATION = 'https://saneobankaj.blob.core.windows.net/silver',\n    CREDENTIAL = Credsaneobankaj\n)",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "syndp_neoBank",
+						"poolName": "syndp_neoBank"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-MasterKey')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "SQL-Dedicado"
+				},
+				"content": {
+					"query": "create master key encryption by password = 'Qualquercoisa123';",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "syndp_neoBank",
+						"poolName": "syndp_neoBank"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-TabelaExt')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t STRING_DELIMITER = '\"',\n\t\t\t FIRST_ROW = 2,\n\t\t\t USE_TYPE_DEFAULT = TRUE\n\t\t\t))\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'silver_saneobankaj_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [silver_saneobankaj_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://silver@saneobankaj.dfs.core.windows.net', \n\t\tTYPE = HADOOP \n\t)\nGO\n\nCREATE EXTERNAL TABLE dbo.extNeoClient (\n\tRowNumber nvarchar(200),\n\tCustomerId nvarchar(200),\n\tSurname nvarchar(200),\n\tCreditScore nvarchar(200),\n\tGeography nvarchar(200),\n\tGender nvarchar(200),\n\tAge nvarchar(200),\n\tTenure nvarchar(200),\n\tBalance nvarchar(200),\n\tNumOfProducts nvarchar(200),\n\tHasCrCard nvarchar(200),\n\tIsActiveMember nvarchar(200),\n\tEstimatedSalary nvarchar(200),\n\tExited nvarchar(200)\n\t)\n\tWITH (\n\tLOCATION = 'NeoBank_Modelling/NeoBankClients_DataBricks.csv',\n\tDATA_SOURCE = [silver_saneobankaj_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.extNeoClient\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "syndp_neoBank",
+						"poolName": "syndp_neoBank"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-fileformat')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "SQL-Dedicado"
+				},
+				"content": {
+					"query": "CREATE EXTERNAl FILE FORMAT Formatocsv\nWITH(\n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS(\n        FIELD_TERMINATOR = ',',\n        STRING_DELIMITER = '\"',\n        FIRST_ROW = 1,\n        USE_TYPE_DEFAULT = TRUE\n\n    )\n\n)",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "syndp_neoBank",
+						"poolName": "syndp_neoBank"
 					},
 					"resultLimit": 5000
 				},
@@ -763,101 +884,12 @@
 			"type": "Microsoft.Synapse/workspaces/sqlPools",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"collation": "SQL_Latin1_General_CP1_CI_AS",
+				"maxSizeBytes": 263882790666240,
 				"annotations": []
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SQL-MasterKey')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"folder": {
-					"name": "SQL-Dedicado"
-				},
-				"content": {
-					"query": "create master key encryption by password = 'Qualquercoisa123';",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "syndp_neoBank",
-						"poolName": "syndp_neoBank"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SQL-Credenciais')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"folder": {
-					"name": "SQL-Dedicado"
-				},
-				"content": {
-					"query": "create database scoped CREDENTIAL Credsaneobankaj with identity = 'shared access signature', secret = 'sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-10-10T04:26:05Z&st=2023-10-09T20:26:05Z&spr=https&sig=%2BAhyscbGYoih%2F%2Fv%2FV7AvJp8NtkRg4qTCG4uGZAHtH7w%3D' \nGO",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "syndp_neoBank",
-						"poolName": "syndp_neoBank"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SQL-DataSource')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"folder": {
-					"name": "SQL-Dedicado"
-				},
-				"content": {
-					"query": "CREATE EXTERNAL DATA SOURCE ContainersaNeoBank \nWITH (\n    LOCATION = 'https://saneobankaj.blob.core.windows.net/silver',\n    CREDENTIAL = Credsaneobankaj\n)",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "syndp_neoBank",
-						"poolName": "syndp_neoBank"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SQL-fileformat')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"folder": {
-					"name": "SQL-Dedicado"
-				},
-				"content": {
-					"query": "CREATE EXTERNAl FILE FORMAT Formatocsv\nWITH(\n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS(\n        FIELD_TERMINATOR = ',',\n        STRING_DELIMITER = '\"',\n        FIRST_ROW = 1,\n        USE_TYPE_DEFAULT = TRUE\n\n    )\n\n)",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "syndp_neoBank",
-						"poolName": "syndp_neoBank"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
+			"dependsOn": [],
+			"location": "brazilsouth"
 		}
 	]
 }
