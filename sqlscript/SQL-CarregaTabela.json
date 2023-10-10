@@ -1,0 +1,17 @@
+{
+	"name": "SQL-CarregaTabela",
+	"properties": {
+		"content": {
+			"query": "COPY INTO TB_NEOBANK_CLIENTS\n(\nRowNumber,\nCustomerId,\nSurname,\nCreditScore,\nGeography,\nGender,\nAge,\nTenure,\nBalance,\nNumOfProducts,\nHasCrCard,\nIsActiveMember,\nEstimatedSalary,\nExited\n)\nFROM 'https://saneobankaj.blob.core.windows.net/silver/NeoBank_Modelling/NeoBankClients_DataBricks.csv'\nWITH\n(\nFILE_TYPE = 'CSV',\nFIRSTROW = 2,\nFIELDTERMINATOR = ',',\nCREDENTIAL = (IDENTITY ='Storage Account Key', SECRET = 'PpLTVTrybFIV1EE6XUcfCZtizzaQvQfgyJVhz7smNoyZEdyMK8J3Ea/iptG1YTmRkCg3d1lNKGI1+AStXY99dw==')\n);\n\nSELECT * from dbo.TB_NEOBANK_CLIENTS\nwhere CustomerId = '15628319';",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "syndp_neoBank",
+				"poolName": "syndp_neoBank"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

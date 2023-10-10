@@ -1,0 +1,17 @@
+{
+	"name": "SQL-CriandoTabelaTB_Neobank",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE TB_NEOBANK_CLIENTS\n(\nRowNumber VARCHAR(100),\nCustomerId VARCHAR(100),\nSurname VARCHAR(100),\nCreditScore VARCHAR(100),\nGeography VARCHAR(100),\nGender VARCHAR(100),\nAge VARCHAR(100),\nTenure VARCHAR(100),\nBalance VARCHAR(100),\nNumOfProducts VARCHAR(100),\nHasCrCard VARCHAR(100),\nIsActiveMember VARCHAR(100),\nEstimatedSalary VARCHAR(100),\nExited VARCHAR(100)\n)\nWITH \n(\nDISTRIBUTION = HASH (CustomerId),\nCLUSTERED COLUMNSTORE INDEX\n);",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "syndp_neoBank",
+				"poolName": "syndp_neoBank"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
