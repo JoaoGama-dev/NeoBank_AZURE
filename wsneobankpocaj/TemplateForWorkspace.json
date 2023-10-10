@@ -22,15 +22,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('workspaceName'), '/syndp_neoBank')]",
-			"type": "Microsoft.Synapse/workspaces/sqlPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/wsneobankpocaj-WorkspaceDefaultSqlServer')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -890,6 +881,46 @@
 			},
 			"dependsOn": [],
 			"location": "brazilsouth"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-CriandoTabelaTB_Neobank')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "CREATE TABLE TB_NEOBANK_CLIENTS\n(\nRowNumber VARCHAR(100),\nCustomerId VARCHAR(100),\nSurname VARCHAR(100),\nCreditScore VARCHAR(100),\nGeography VARCHAR(100),\nGender VARCHAR(100),\nAge VARCHAR(100),\nTenure VARCHAR(100),\nBalance VARCHAR(100),\nNumOfProducts VARCHAR(100),\nHasCrCard VARCHAR(100),\nIsActiveMember VARCHAR(100),\nEstimatedSalary VARCHAR(100),\nExited VARCHAR(100)\n)\nWITH \n(\nDISTRIBUTION = HASH (CustomerId),\nCLUSTERED COLUMNSTORE INDEX\n);",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "syndp_neoBank",
+						"poolName": "syndp_neoBank"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-CarregaTabela')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "COPY INTO TB_NEOBANK_CLIENTS\n(\nRowNumber,\nCustomerId,\nSurname,\nCreditScore,\nGeography,\nGender,\nAge,\nTenure,\nBalance,\nNumOfProducts,\nHasCrCard,\nIsActiveMember,\nEstimatedSalary,\nExited\n)\nFROM 'https://saneobankaj.blob.core.windows.net/silver/NeoBank_Modelling/NeoBankClients_DataBricks.csv'\nWITH\n(\nFILE_TYPE = 'CSV',\nFIRSTROW = 2,\nFIELDTERMINATOR = ',',\nCREDENTIAL = (IDENTITY ='Storage Account Key', SECRET = 'PpLTVTrybFIV1EE6XUcfCZtizzaQvQfgyJVhz7smNoyZEdyMK8J3Ea/iptG1YTmRkCg3d1lNKGI1+AStXY99dw==')\n);\n\nSELECT * from dbo.TB_NEOBANK_CLIENTS\nwhere CustomerId = '15628319';",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "syndp_neoBank",
+						"poolName": "syndp_neoBank"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
 		}
 	]
 }
